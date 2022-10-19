@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as mui from '@mui/material';
-import Wordle from './Wordle/Wordle';
+import Wordle from './wordle/Wordle';
 
 const Projects = React.forwardRef((_, ref) => {
     return (
