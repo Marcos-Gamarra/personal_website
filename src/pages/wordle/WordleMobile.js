@@ -165,7 +165,7 @@ const WordleMobile = () => {
 
     async function checkWord(word) {
         word = word.toLowerCase();
-        let res = await fetch(`https://marcosrene.ga/check_word/${word}`);
+        let res = await fetch(`https://marcosrene.ga/wordle/check_word/${word}`);
         let data = await res.text();
         if (data === 'true') {
             return true;
