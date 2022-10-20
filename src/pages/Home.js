@@ -18,8 +18,8 @@ const Home = React.forwardRef((_, ref) => {
           bgcolor: 'background.default',
         }}
       >
-        <mui.Typography variant="h1" component="div" gutterBottom>
-          Home
+        <mui.Typography variant="h1" component="div" gutterBottom color="white">
+            Hi, I'm Marcos. 
         </mui.Typography>
       </mui.Box>
     </mui.Grid>

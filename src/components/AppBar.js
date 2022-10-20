@@ -4,8 +4,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Drawer from './Drawer';
 
-;
-
 const AppBarDesktop = ({ homeRef, aboutRef, contactRef, projectsRef }) => {
     const scrollToRef = (ref) => {
         ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' })

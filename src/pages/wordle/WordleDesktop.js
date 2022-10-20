@@ -16,6 +16,7 @@ const Square = (letter, color, key) => {
             }}
             key={key}
         >
+
             <mui.Typography variant="boxLetter" >
                 {letter}
             </mui.Typography>
@@ -80,7 +81,7 @@ const WordleDesktop = () => {
             return;
         }
 
-        const isValidWord = await checkWord(inputRef.current?.value);
+        const isValidWord = await checkWord(inputRef.current.value);
 
         if (isValidWord === false) {
             alert("Not a valid word");
@@ -169,7 +170,11 @@ const WordleDesktop = () => {
         <mui.Stack
             alignItems="center"
             justifyContent="center"
+            spacing={3}
         >
+            <mui.Typography variant="h3" component="div" color="white">
+                Wordle
+            </mui.Typography>
             <mui.Container
                 sx={{
                     display: 'flex',

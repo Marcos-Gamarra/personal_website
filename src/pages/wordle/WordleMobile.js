@@ -178,6 +178,9 @@ const WordleMobile = () => {
             alignItems="center"
             spacing={4}
         >
+            <Typography variant="h3" component="div" color="white">
+                Wordle
+            </Typography>
             <Box>
                 <Box display="flex">{squares[0]}</Box>
                 <Box display="flex">{squares[1]}</Box>
