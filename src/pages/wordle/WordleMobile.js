@@ -154,7 +154,7 @@ const WordleMobile = () => {
 
     async function getWord() {
         try {
-            const response = await fetch('http://192.168.90.197/getWord');
+            const response = await fetch('https://marcosrene.ga/wordle/get_word');
             const data = await response.json();
             setTarget(data.word);
         } catch (error) {
@@ -165,7 +165,7 @@ const WordleMobile = () => {
 
     async function checkWord(word) {
         word = word.toLowerCase();
-        let res = await fetch(`http://192.168.90.197/checkWord?word=${word}`);
+        let res = await fetch(`https://marcosrene.ga/check_word/${word}`);
         let data = await res.json();
         if (data.isValidWord === 'true') {
             return true;

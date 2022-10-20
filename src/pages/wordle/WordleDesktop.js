@@ -147,7 +147,7 @@ const WordleDesktop = () => {
 
     async function getWord() {
         try {
-            const response = await fetch('http://localhost:8080/wordle/get_word');
+            const response = await fetch('https://marcosrene.ga/wordle/get_word');
             const data = await response.text();
             setTarget(data);
         } catch (error) {
@@ -158,7 +158,7 @@ const WordleDesktop = () => {
 
     async function checkWord(word) {
         word = word.toLowerCase();
-        let res = await fetch(`http://localhost:8080/wordle/check_word/${word}`);
+        let res = await fetch(`https://marcosrene.ga/wordle/check_word/${word}`);
         let data = await res.text();
         if (data === 'true') {
             return true;
