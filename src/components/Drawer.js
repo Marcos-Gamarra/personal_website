@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as mui from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
+import WorkIcon from '@mui/icons-material/Work';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 const ListItem = ({ icon, primary, onClose, ref, block = 'start' }) => {
 
@@ -27,8 +28,8 @@ const Drawer = ({ open, onClose, homeRef, aboutRef, contactRef, projectsRef }) =
       <mui.List sx={{ width: 200 }}>
         {ListItem({ onClose, primary: 'Home', icon: <HomeIcon />, ref: homeRef, block: 'end' })}
         {ListItem({ onClose, primary: 'About', icon: <InfoIcon />, ref: aboutRef })}
-        {ListItem({ onClose, primary: 'Projects', icon: <ContactPageIcon />, ref: projectsRef })}
-        {ListItem({ onClose, primary: 'Contact', icon: <ContactPageIcon />, ref: contactRef })}
+        {ListItem({ onClose, primary: 'Projects', icon: <WorkIcon />, ref: projectsRef })}
+        {ListItem({ onClose, primary: 'Contact', icon: <PhoneIcon />, ref: contactRef })}
       </mui.List>
     </mui.Drawer >
   );

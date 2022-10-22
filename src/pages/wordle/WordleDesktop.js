@@ -9,8 +9,8 @@ const Square = (letter, color, key) => {
                 bgcolor: color,
                 margin: '5px',
                 borderRadius: '10%',
-                height: { xs: '50px', sm: '100px' },
-                width: { xs: '50px', sm: '100px' },
+                height: { xs: '50px', sm: '80px' },
+                width: { xs: '50px', sm: '80px' },
                 justifyContent: 'center',
                 alignItems: 'center',
             }}

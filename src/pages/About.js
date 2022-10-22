@@ -20,12 +20,14 @@ const About = React.forwardRef((_, ref) => {
                 }}
             >
                 <mui.Typography
-                    variant="h3"
                     component="div"
-                    padding={10}
                     sx={{
-                        display: 'flex',
                         color: 'white',
+                        fontSize: {
+                            xs: '2rem',
+                            sm: '3rem',
+                        },
+                        padding: '2rem',
                     }}
                 >
                     I'm a CS student at UPTP in Paraguay. Currently learning React.
