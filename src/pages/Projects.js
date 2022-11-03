@@ -1,9 +1,9 @@
 import * as React from 'react';
-import * as mui from '@mui/material';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardHeader from '@mui/material/CardHeader';
 import CardActionArea from '@mui/material/CardActionArea';
+import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
@@ -14,7 +14,12 @@ const SnakeCard = () => {
     }, [navigate]);
     return (
         <Card
-            sx={{ maxWidth: 500 }}
+            sx={{
+                maxWidth: {
+                    xs: 300,
+                    sm: 500,
+                }
+            }}
         >
             <CardActionArea
                 onClick={onClick}
@@ -29,13 +34,12 @@ const SnakeCard = () => {
                 />
                 <CardMedia
                     component="img"
-                    height="500"
                     image="./assets/snakeScreenshot.png"
                     alt="snake"
                 />
 
             </CardActionArea>
-        </Card>
+        </Card >
     );
 }
 
@@ -45,7 +49,12 @@ const WordleCard = () => {
         navigate('/projects/wordle');
     }, [navigate]);
     return (
-        <Card sx={{ maxWidth: 500 }}>
+        <Card sx={{
+            maxWidth: {
+                xs: 300,
+                sm: 500,
+            }
+        }}>
             <CardActionArea
                 onClick={onClick}
             >
@@ -59,9 +68,9 @@ const WordleCard = () => {
                 />
                 <CardMedia
                     component="img"
-                    height="500"
                     image="./assets/wordleScreenshot.png"
                     alt="wordle"
+
                 />
             </CardActionArea>
         </Card>
@@ -72,23 +81,25 @@ const WordleCard = () => {
 
 const Projects = React.forwardRef((_, ref) => {
     return (
-        <mui.Box ref={ref}
+        <Box
+            ref={ref}
             sx={{
                 display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
+                gridGap: { xs: '50px', sm: '0px' },
+                padding: { xs: '50px', sm: '0px' },
                 height: {
-                    //For mobile, appbar height is 56px
-                    //appbar height in desktop is 64px
-                    xs: `calc(100vh - 56px)`,
-                    sm: window.innerHeight - 64,
+                    xs: 'auto',
+                    md: `calc(100vh - 64px)`,
                 },
-                bgcolor: 'background.default',
+                backgroundColor: 'background.default',
             }}
         >
             <WordleCard />
             <SnakeCard />
-        </mui.Box>
+        </Box>
     );
 });
 
