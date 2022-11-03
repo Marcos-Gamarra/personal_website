@@ -19,12 +19,11 @@ const snakeColor = '#C3B090'
 const scoreboardHeight = squareSize * 2
 
 const initialBodyCoords = [
-    [10, 10],
-    [9, 10],
-    [8, 10],
-    [7, 10],
     [6, 10],
-    [5, 10]
+    [5, 10],
+    [4, 10],
+    [3, 10],
+    [2, 10]
 ]
 
 const generateFoodCoord = () => {
@@ -115,7 +114,8 @@ const Scoreboard = ({ score }) => {
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
                 bgcolor: '#C3B090',
-                borderBottom: '1px solid #000',
+                border: '1px solid #000',
+                borderRadius: `${squareSize}px ${squareSize}px 0 0`,
             }}
         >
             Score: {score}
@@ -165,10 +165,9 @@ const Food = ({ coord }) => {
             src="../assets/apple.png"
             height={squareSize}
             width={squareSize}
-            position="absolute"
+            position='absolute'
             left={coord[0] * squareSize}
             top={coord[1] * squareSize}
-
         />
     )
 }
@@ -180,9 +179,9 @@ const Square = ({ bgcolor, coord }) => {
                 width: squareSize,
                 height: squareSize,
                 bgcolor: bgcolor,
+                position: 'absolute',
                 left: coord[0] * squareSize,
                 top: coord[1] * squareSize,
-                position: 'absolute',
             }}
         />
     )
@@ -299,7 +298,7 @@ const Snake = () => {
             } else {
                 setBodyCoords(fillCoords(bodyCoords[0], direction))
             }
-        }, 100)
+        }, 80)
 
         return () => {
             clearInterval(interval)
@@ -315,9 +314,9 @@ const Snake = () => {
             src="../assets/snake.png"
             height={squareSize}
             width={squareSize}
+            position='absolute'
             left={bodyCoords[0][0] * squareSize}
             top={bodyCoords[0][1] * squareSize}
-            position="absolute"
             style={{ transform: `rotate(${headRotation}deg)` }}
         />
 
@@ -340,15 +339,13 @@ const Snake = () => {
             />
             <Box
                 sx={{
-                    height: squareSize * gridSize + scoreboardHeight,
-                    width: squareSize * gridSize,
-                    border: '1px solid black',
-                    borderRadius: `${squareSize}px`,
-                    overflow: 'hidden',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    width: '100vw',
+                    backgroundColor: 'background.default'
                 }}
             >
 
@@ -358,7 +355,12 @@ const Snake = () => {
                         width: squareSize * gridSize,
                         height: squareSize * gridSize,
                         bgcolor: 'grey',
-                        position: 'absolute',
+                        position: 'relative',
+                        borderLeft: '1px solid #000',
+                        borderRight: '1px solid #000',
+                        borderBottom: '1px solid #000',
+                        borderRadius: `0 0 ${squareSize}px ${squareSize}px`,
+                        overflow: 'hidden'
                     }}
                 >
                     <Grid />
