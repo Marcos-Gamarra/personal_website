@@ -10,7 +10,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 
 const theme = Theme
 
-const getSquareSize = () => {
+const getCellSize = () => {
     if (window.innerWidth > 600) {
         return 30
     }
@@ -18,7 +18,7 @@ const getSquareSize = () => {
     return 15
 }
 
-const squareSize = getSquareSize()
+const cellSize = getCellSize()
 const gridSize = 20
 const snakeColor = '#C3B090'
 
@@ -45,7 +45,6 @@ const PlayAgainBackdrop = ({
     score,
     playGame,
 }) => {
-
     return (
         <Backdrop
             sx={{
@@ -76,7 +75,6 @@ const PlayAgainBackdrop = ({
                     sx={{
                         backgroundColor: snakeColor,
                         marginTop: '1rem',
-                        //change color to red on hover 
                         '&:hover': {
                             backgroundColor: snakeColor,
                             opacity: 0.7,
@@ -89,7 +87,6 @@ const PlayAgainBackdrop = ({
         </Backdrop>
     )
 }
-
 
 
 const Scoreboard = ({ score, playGame }) => {
@@ -105,13 +102,13 @@ const Scoreboard = ({ score, playGame }) => {
                 displayDirection: 'row',
                 justifyContent: 'space-around',
                 alignItems: 'center',
-                height: squareSize * 3,
-                width: squareSize * gridSize,
+                height: cellSize * 3,
+                width: cellSize * gridSize,
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
                 bgcolor: '#C3B090',
                 border: '1px solid #000',
-                borderRadius: `${squareSize}px ${squareSize}px 0 0`,
+                borderRadius: `${cellSize}px ${cellSize}px 0 0`,
             }}
         >
             <div>Score: {score}</div>
@@ -119,7 +116,7 @@ const Scoreboard = ({ score, playGame }) => {
                 variant="contained"
                 onClick={onClick}
                 sx={{
-                    height: squareSize*2,
+                    height: cellSize*2,
                     backgroundColor: '#704F70',
                     '&:hover': {
                         backgroundColor: '#704F70',
@@ -136,7 +133,7 @@ const Scoreboard = ({ score, playGame }) => {
     )
 }
 
-const RowForGrid = ({ rowNumber }) => {
+const RowOfGrid = ({ rowNumber }) => {
     let color1 = '#704F70'
     let color2 = '#929580'
 
@@ -148,24 +145,24 @@ const RowForGrid = ({ rowNumber }) => {
     return (
         <Box
             sx={{
-                width: squareSize * gridSize,
-                height: squareSize,
+                width: cellSize * gridSize,
+                height: cellSize,
                 opacity: 0.5,
                 background: `repeating-linear-gradient(
                     to right,
                     ${color1},
-                    ${color1} ${squareSize}px,
-                    ${color2} ${squareSize + 1}px,
-                    ${color2} ${squareSize * 2}px
+                    ${color1} ${cellSize}px,
+                    ${color2} ${cellSize + 1}px,
+                    ${color2} ${cellSize * 2}px
                 )`,
             }}
         />
     )
 }
 
-const Grid = () => {
+const SnakeGrid = () => {
     return [...Array(gridSize)].map((_, i) => {
-        return <RowForGrid key={i} rowNumber={i} />
+        return <RowOfGrid key={i} rowNumber={i} />
     })
 }
 
@@ -176,11 +173,11 @@ const Food = ({ coord }) => {
         <Box
             component="img"
             src="../assets/apple.png"
-            height={squareSize}
-            width={squareSize}
+            height={cellSize}
+            width={cellSize}
             position='absolute'
-            left={coord[0] * squareSize}
-            top={coord[1] * squareSize}
+            left={coord[0] * cellSize}
+            top={coord[1] * cellSize}
         />
     )
 }
@@ -189,12 +186,12 @@ const BodyPart = ({ bgcolor, coord }) => {
     return (
         <Box
             sx={{
-                width: squareSize,
-                height: squareSize,
+                width: cellSize,
+                height: cellSize,
                 bgcolor: bgcolor,
                 position: 'absolute',
-                left: coord[0] * squareSize,
-                top: coord[1] * squareSize,
+                left: coord[0] * cellSize,
+                top: coord[1] * cellSize,
             }}
         />
     )
@@ -339,11 +336,11 @@ const Snake = () => {
             key={0}
             component="img"
             src="../assets/snake.png"
-            height={squareSize}
-            width={squareSize}
+            height={cellSize}
+            width={cellSize}
             position='absolute'
-            left={bodyCoords[0][0] * squareSize}
-            top={bodyCoords[0][1] * squareSize}
+            left={bodyCoords[0][0] * cellSize}
+            top={bodyCoords[0][1] * cellSize}
             style={{ transform: `rotate(${headRotation}deg)` }}
         />
 
@@ -375,18 +372,18 @@ const Snake = () => {
                     <Scoreboard score={score} playGame={playGame} />
                     <Box
                         sx={{
-                            width: squareSize * gridSize,
-                            height: squareSize * gridSize,
+                            width: cellSize * gridSize,
+                            height: cellSize * gridSize,
                             bgcolor: 'grey',
                             position: 'relative',
                             borderLeft: '1px solid #000',
                             borderRight: '1px solid #000',
                             borderBottom: '1px solid #000',
-                            borderRadius: `0 0 ${squareSize}px ${squareSize}px`,
+                            borderRadius: `0 0 ${cellSize}px ${cellSize}px`,
                             overflow: 'hidden'
                         }}
                     >
-                        <Grid />
+                        <SnakeGrid />
                         {snake}
                         <Food coord={foodCoords} />
                     </Box>

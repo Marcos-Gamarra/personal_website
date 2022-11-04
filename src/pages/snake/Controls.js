@@ -42,7 +42,6 @@ const Controls = () => {
                     />
                 </IconButton>
                 <IconButton
-                    aria-label="right"
                     onClick={() => simulateKeyPress('ArrowRight')}
                 >
                     <ArrowRightIcon
@@ -63,7 +62,6 @@ const Controls = () => {
             >
 
                 <IconButton
-                    aria-label="up"
                     onClick={() => simulateKeyPress('ArrowUp')}
                 >
                     <ArrowDropUpIcon
@@ -73,7 +71,6 @@ const Controls = () => {
                     />
                 </IconButton>
                 <IconButton
-                    aria-label="down"
                     onClick={() => simulateKeyPress('ArrowDown')}
                 >
                     <ArrowDropDownIcon
