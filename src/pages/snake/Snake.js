@@ -92,7 +92,7 @@ const PlayAgainBackdrop = ({
 
 
 
-const Scoreboard = ({ score, playGame, height }) => {
+const Scoreboard = ({ score, playGame }) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
     const onClick = () => {
         setIsButtonDisabled(true)
@@ -105,7 +105,7 @@ const Scoreboard = ({ score, playGame, height }) => {
                 displayDirection: 'row',
                 justifyContent: 'space-around',
                 alignItems: 'center',
-                height: height,
+                height: squareSize * 3,
                 width: squareSize * gridSize,
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
@@ -119,6 +119,7 @@ const Scoreboard = ({ score, playGame, height }) => {
                 variant="contained"
                 onClick={onClick}
                 sx={{
+                    height: squareSize*2,
                     backgroundColor: '#704F70',
                     '&:hover': {
                         backgroundColor: '#704F70',
@@ -371,7 +372,7 @@ const Snake = () => {
             >
 
                 <Box>
-                    <Scoreboard score={score} playGame={playGame} height={squareSize * 2} />
+                    <Scoreboard score={score} playGame={playGame} />
                     <Box
                         sx={{
                             width: squareSize * gridSize,
