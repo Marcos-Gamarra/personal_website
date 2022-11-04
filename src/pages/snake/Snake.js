@@ -7,18 +7,10 @@ import Typography from '@mui/material/Typography'
 import Controls from './Controls'
 import Theme from 'Theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
+import { useMediaQuery } from '@mui/material'
 
 const theme = Theme
 
-const getCellSize = () => {
-    if (window.innerWidth > 600) {
-        return 30
-    }
-
-    return 15
-}
-
-const cellSize = getCellSize()
 const gridSize = 20
 const snakeColor = '#C3B090'
 
@@ -89,7 +81,7 @@ const PlayAgainBackdrop = ({
 }
 
 
-const Scoreboard = ({ score, playGame }) => {
+const Scoreboard = ({ score, playGame, cellSize }) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
     const onClick = () => {
         setIsButtonDisabled(true)
@@ -116,7 +108,7 @@ const Scoreboard = ({ score, playGame }) => {
                 variant="contained"
                 onClick={onClick}
                 sx={{
-                    height: cellSize*2,
+                    height: cellSize * 2,
                     backgroundColor: '#704F70',
                     '&:hover': {
                         backgroundColor: '#704F70',
@@ -133,7 +125,7 @@ const Scoreboard = ({ score, playGame }) => {
     )
 }
 
-const RowOfGrid = ({ rowNumber }) => {
+const RowOfGrid = ({ rowNumber, cellSize }) => {
     let color1 = '#704F70'
     let color2 = '#929580'
 
@@ -160,15 +152,15 @@ const RowOfGrid = ({ rowNumber }) => {
     )
 }
 
-const SnakeGrid = () => {
+const SnakeGrid = ({cellSize}) => {
     return [...Array(gridSize)].map((_, i) => {
-        return <RowOfGrid key={i} rowNumber={i} />
+        return <RowOfGrid key={i} rowNumber={i} cellSize={cellSize}/>
     })
 }
 
 
 
-const Food = ({ coord }) => {
+const Food = ({ coord, cellSize }) => {
     return (
         <Box
             component="img"
@@ -182,7 +174,7 @@ const Food = ({ coord }) => {
     )
 }
 
-const BodyPart = ({ bgcolor, coord }) => {
+const BodyPart = ({ bgcolor, coord, cellSize }) => {
     return (
         <Box
             sx={{
@@ -205,6 +197,9 @@ const Snake = () => {
     const [bodyCoords, setBodyCoords] = useState(initialBodyCoords)
     const [backdropOpen, setBackdropOpen] = useState(false)
     const [isGameRunning, setIsGameRunning] = useState(false)
+
+    const isMobile = useMediaQuery('(max-width: 600px)')
+    const cellSize = isMobile ? 15 : 30
 
     const playGame = () => {
         setScore(0)
@@ -346,7 +341,7 @@ const Snake = () => {
 
     const snake = [head]
     bodyCoords.slice(1).forEach((coord, i) => {
-        snake.push(<BodyPart key={i + 1} bgcolor={snakeColor} coord={coord} />)
+        snake.push(<BodyPart key={i + 1} bgcolor={snakeColor} coord={coord} cellSize={cellSize}/>)
     })
 
     return (
@@ -369,7 +364,7 @@ const Snake = () => {
             >
 
                 <Box>
-                    <Scoreboard score={score} playGame={playGame} />
+                    <Scoreboard score={score} playGame={playGame} cellSize={cellSize} />
                     <Box
                         sx={{
                             width: cellSize * gridSize,
@@ -383,9 +378,9 @@ const Snake = () => {
                             overflow: 'hidden'
                         }}
                     >
-                        <SnakeGrid />
+                        <SnakeGrid cellSize={cellSize}/>
                         {snake}
-                        <Food coord={foodCoords} />
+                        <Food coord={foodCoords} cellSize={cellSize} />
                     </Box>
                 </Box>
                 <Controls />
