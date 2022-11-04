@@ -4,6 +4,11 @@ import { useState } from 'react'
 import Backdrop from '@mui/material/Backdrop'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import Controls from './Controls'
+import Theme from 'Theme'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
+
+const theme = Theme
 
 const getSquareSize = () => {
     if (window.innerWidth > 600) {
@@ -16,7 +21,6 @@ const getSquareSize = () => {
 const squareSize = getSquareSize()
 const gridSize = 20
 const snakeColor = '#C3B090'
-const scoreboardHeight = squareSize * 2
 
 const initialBodyCoords = [
     [6, 10],
@@ -35,26 +39,12 @@ const generateFoodCoord = () => {
     return foodCoord
 }
 
+
 const PlayAgainBackdrop = ({
     open,
     score,
-    setScore,
-    setBodyCoords,
-    setFoodCoords,
-    setDirection,
-    setHeadRotation,
-    setBackdropOpen,
+    playGame,
 }) => {
-
-    const handlePlayAgain = () => {
-        setScore(0)
-        setBodyCoords(initialBodyCoords)
-        setFoodCoords(generateFoodCoord())
-        setDirection('right')
-        setHeadRotation(270)
-        setBackdropOpen(false)
-
-    }
 
     return (
         <Backdrop
@@ -82,7 +72,7 @@ const PlayAgainBackdrop = ({
                 </Typography>
                 <Button
                     variant="contained"
-                    onClick={handlePlayAgain}
+                    onClick={playGame}
                     sx={{
                         backgroundColor: snakeColor,
                         marginTop: '1rem',
@@ -102,14 +92,20 @@ const PlayAgainBackdrop = ({
 
 
 
-const Scoreboard = ({ score }) => {
+const Scoreboard = ({ score, playGame, height }) => {
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+    const onClick = () => {
+        setIsButtonDisabled(true)
+        playGame()
+    }
     return (
         <Box
             sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                displayDirection: 'row',
+                justifyContent: 'space-around',
                 alignItems: 'center',
-                height: scoreboardHeight,
+                height: height,
                 width: squareSize * gridSize,
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
@@ -118,7 +114,23 @@ const Scoreboard = ({ score }) => {
                 borderRadius: `${squareSize}px ${squareSize}px 0 0`,
             }}
         >
-            Score: {score}
+            <div>Score: {score}</div>
+            <Button
+                variant="contained"
+                onClick={onClick}
+                sx={{
+                    backgroundColor: '#704F70',
+                    '&:hover': {
+                        backgroundColor: '#704F70',
+                        opacity: 0.9,
+                    },
+                    opacity: isButtonDisabled ? 0 : 1,
+                }}
+                disabled={isButtonDisabled}
+
+            >
+                Play Game
+            </Button>
         </Box>
     )
 }
@@ -172,7 +184,7 @@ const Food = ({ coord }) => {
     )
 }
 
-const Square = ({ bgcolor, coord }) => {
+const BodyPart = ({ bgcolor, coord }) => {
     return (
         <Box
             sx={{
@@ -194,6 +206,18 @@ const Snake = () => {
     const [score, setScore] = useState(0)
     const [bodyCoords, setBodyCoords] = useState(initialBodyCoords)
     const [backdropOpen, setBackdropOpen] = useState(false)
+    const [isGameRunning, setIsGameRunning] = useState(false)
+
+    const playGame = () => {
+        setScore(0)
+        setBodyCoords(initialBodyCoords)
+        setFoodCoords(generateFoodCoord())
+        setDirection('right')
+        setHeadRotation(270)
+        setBackdropOpen(false)
+        setIsGameRunning(true)
+    }
+
 
     const checkCollisionWithBody = () => {
         const head = bodyCoords[0]
@@ -244,65 +268,67 @@ const Snake = () => {
     }
 
     useEffect(() => {
-        const keydownHandler = (e) => {
-            switch (e.key) {
-                case 'ArrowUp':
-                    window.removeEventListener('keydown', keydownHandler)
-                    if (direction === 'down') break
-                    setDirection('up')
-                    setHeadRotation(180)
-                    break
-                case 'ArrowDown':
-                    window.removeEventListener('keydown', keydownHandler)
-                    if (direction === 'up') break
-                    setDirection('down')
-                    setHeadRotation(0)
-                    break
-                case 'ArrowLeft':
-                    window.removeEventListener('keydown', keydownHandler)
-                    if (direction === 'right') break
-                    setDirection('left')
-                    setHeadRotation(90)
-                    break
-                case 'ArrowRight':
-                    window.removeEventListener('keydown', keydownHandler)
-                    if (direction === 'left') break
-                    setDirection('right')
-                    setHeadRotation(270)
-                    break
-                case ' ':
+        if (isGameRunning) {
+            const keydownHandler = (e) => {
+                switch (e.key) {
+                    case 'ArrowUp':
+                        window.removeEventListener('keydown', keydownHandler)
+                        if (direction === 'down') break
+                        setDirection('up')
+                        setHeadRotation(180)
+                        break
+                    case 'ArrowDown':
+                        window.removeEventListener('keydown', keydownHandler)
+                        if (direction === 'up') break
+                        setDirection('down')
+                        setHeadRotation(0)
+                        break
+                    case 'ArrowLeft':
+                        window.removeEventListener('keydown', keydownHandler)
+                        if (direction === 'right') break
+                        setDirection('left')
+                        setHeadRotation(90)
+                        break
+                    case 'ArrowRight':
+                        window.removeEventListener('keydown', keydownHandler)
+                        if (direction === 'left') break
+                        setDirection('right')
+                        setHeadRotation(270)
+                        break
+                    case ' ':
+                        clearInterval(interval)
+                        window.removeEventListener('keydown', keydownHandler)
+                        break
+                    default:
+                        break
+                }
+            }
+
+            window.addEventListener('keydown', keydownHandler)
+
+            const interval = setInterval(() => {
+                if (checkCollisionWithBody() || checkCollisionWithWall()) {
                     clearInterval(interval)
                     window.removeEventListener('keydown', keydownHandler)
-                    break
-                default:
-                    break
-            }
-        }
+                    setBackdropOpen(true)
+                    return
+                }
 
-        window.addEventListener('keydown', keydownHandler)
+                if (foodEaten()) {
+                    const tail = bodyCoords[bodyCoords.length - 1]
+                    const newCoords = fillCoords(bodyCoords[0], direction)
+                    setScore(score + 1)
+                    setFoodCoords(generateFoodCoord())
+                    setBodyCoords([...newCoords, tail])
+                } else {
+                    setBodyCoords(fillCoords(bodyCoords[0], direction))
+                }
+            }, 80)
 
-        const interval = setInterval(() => {
-            if (checkCollisionWithBody() || checkCollisionWithWall()) {
+            return () => {
                 clearInterval(interval)
                 window.removeEventListener('keydown', keydownHandler)
-                setBackdropOpen(true)
-                return
             }
-
-            if (foodEaten()) {
-                const tail = bodyCoords[bodyCoords.length - 1]
-                const newCoords = fillCoords(bodyCoords[0], direction)
-                setScore(score + 1)
-                setFoodCoords(generateFoodCoord())
-                setBodyCoords([...newCoords, tail])
-            } else {
-                setBodyCoords(fillCoords(bodyCoords[0], direction))
-            }
-        }, 80)
-
-        return () => {
-            clearInterval(interval)
-            window.removeEventListener('keydown', keydownHandler)
         }
     })
 
@@ -322,53 +348,51 @@ const Snake = () => {
 
     const snake = [head]
     bodyCoords.slice(1).forEach((coord, i) => {
-        snake.push(<Square key={i + 1} bgcolor={snakeColor} coord={coord} />)
+        snake.push(<BodyPart key={i + 1} bgcolor={snakeColor} coord={coord} />)
     })
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <PlayAgainBackdrop
                 open={backdropOpen}
                 score={score}
-                setScore={setScore}
-                setBodyCoords={setBodyCoords}
-                setFoodCoords={setFoodCoords}
-                setDirection={setDirection}
-                setHeadRotation={setHeadRotation}
-                setBackdropOpen={setBackdropOpen}
+                playGame={playGame}
             />
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    justifyContent: 'space-evenly',
                     alignItems: 'center',
                     height: '100vh',
                     width: '100vw',
-                    backgroundColor: 'background.default'
+                    backgroundColor: 'background.paper'
                 }}
             >
 
-                <Scoreboard score={score} />
-                <Box
-                    sx={{
-                        width: squareSize * gridSize,
-                        height: squareSize * gridSize,
-                        bgcolor: 'grey',
-                        position: 'relative',
-                        borderLeft: '1px solid #000',
-                        borderRight: '1px solid #000',
-                        borderBottom: '1px solid #000',
-                        borderRadius: `0 0 ${squareSize}px ${squareSize}px`,
-                        overflow: 'hidden'
-                    }}
-                >
-                    <Grid />
-                    {snake}
-                    <Food coord={foodCoords} />
+                <Box>
+                    <Scoreboard score={score} playGame={playGame} height={squareSize * 2} />
+                    <Box
+                        sx={{
+                            width: squareSize * gridSize,
+                            height: squareSize * gridSize,
+                            bgcolor: 'grey',
+                            position: 'relative',
+                            borderLeft: '1px solid #000',
+                            borderRight: '1px solid #000',
+                            borderBottom: '1px solid #000',
+                            borderRadius: `0 0 ${squareSize}px ${squareSize}px`,
+                            overflow: 'hidden'
+                        }}
+                    >
+                        <Grid />
+                        {snake}
+                        <Food coord={foodCoords} />
+                    </Box>
                 </Box>
+                <Controls />
             </Box>
-        </>
+        </ThemeProvider >
     )
 }
 

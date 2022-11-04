@@ -30,6 +30,7 @@ const SnakeCard = () => {
                     sx={{
                         textAlign: 'center',
                         borderBottom: '1px solid #000000',
+                        
                     }}
                 />
                 <CardMedia
